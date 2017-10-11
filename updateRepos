@@ -1,0 +1,59 @@
+# Make new file in ~/tmp/
+logfile=$(mktemp --tmpdir=${HOME}/tmp --suffix=.$(date +'%Y%m%d').log)
+trap 'if [[ -e $logfile ]]; then rm $logfile; fi; exit 1;' INT
+
+# Updates all repositories.
+
+echo "csaw:" >> $logfile
+cd ~/devel/csaw/package
+git pull >> $logfile 2>&1
+cd - > /dev/null
+echo >> $logfile
+
+echo "csaw userguide:" >> $logfile
+cd ~/devel/csaw/userguide
+git pull >> $logfile 2>&1
+cd - > /dev/null
+echo >> $logfile
+
+echo "csaw workflow:" >> $logfile
+cd ~/devel/csaw/workflow/local
+git pull >> $logfile 2>&1
+cd - > /dev/null
+echo >> $logfile
+
+echo "diffHic:" >> $logfile
+cd ~/devel/diffHic/package
+git pull >> $logfile 2>&1
+cd - > /dev/null
+echo >> $logfile
+
+echo "diffHic userguide:" >> $logfile
+cd ~/devel/diffHic/userguide
+git pull >> $logfile 2>&1
+cd - > /dev/null
+echo >> $logfile
+
+echo "edgeR:" >> $logfile
+cd ~/devel/edgeR/reference 
+svn up >> $logfile
+cd - > /dev/null
+echo >> $logfile
+
+echo "Aaron's files in SmythLab:" >> $logfile
+cd ~/devel/ALun
+svn up >> $logfile
+cd - > /dev/null
+echo >> $logfile
+
+# Updates R as well.
+
+echo "Updating R..." >> $logfile
+echo 'require(BiocInstaller); biocLite(ask=FALSE)' | R --no-save --vanilla >> $logfile 2>&1
+echo >> $logfile
+
+echo "Updating Rdevel..." >> $logfile
+echo 'require(BiocInstaller); biocLite(ask=FALSE)' | Rdevel --no-save --vanilla  >> $logfile 2>&1
+echo >> $logfile
+
+echo $logfile
