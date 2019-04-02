@@ -54,12 +54,12 @@ cd $checkdir
 ##################################################
 # Running the check results.
 
-logfile=`pwd`/check.log
+logfile=check.log
 if [[ -e $logfile ]]
 then
 	rm $logfile
 fi
-if [[ -n `find -maxdepth 1 | grep "${packname}.*.tar.gz"` ]]
+if [[ -n `ls | grep "${packname}.*.tar.gz"` ]]
 then
 	rm ${packname}_*.tar.gz
 fi
